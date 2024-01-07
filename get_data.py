@@ -25,7 +25,7 @@ def get_presence(id_employees):
     return presence
 
 def get_presence_status():
-    query = "SELECT * from present_status order by present_name ASC"
+    query = "SELECT * FROM present_status ORDER BY present_name ASC"
     db_cursor.execute(query)
     presence_status = db_cursor.fetchall()
     return presence_status
@@ -33,8 +33,8 @@ def get_presence_status():
 def get_position_name(id_employees):
     query = '''
             SELECT e.id_position, p.position_name 
-            FROM employees as e
-            JOIN position as p ON e.id_position = p.id_position
+            FROM employees AS e
+            JOIN position AS p ON e.id_position = p.id_position
             WHERE e.id_employees = %s
             ORDER BY p.id_position ASC
             '''
@@ -49,8 +49,8 @@ def get_position_name(id_employees):
 def get_shift_name(id_employees):
     query = '''
             SELECT e.id_shift, s.shift_name 
-            FROM employees as e
-            JOIN shift as s ON e.id_shift = s.id_shift
+            FROM employees AS e
+            JOIN shift AS s ON e.id_shift = s.id_shift
             WHERE e.id_employees = %s
             ORDER BY s.id_shift ASC
             '''
@@ -65,9 +65,9 @@ def get_shift_name(id_employees):
 def get_presence_employees(id_employees):
     query = '''
             SELECT p.id_presence, p.presence_date, p.time_in, p.time_out, ps.id_present, ps.present_name
-            FROM presence as p
-            JOIN employees as e ON p.id_employees = e.id_employees
-            JOIN present_status as ps ON p.id_present = ps.id_present
+            FROM presence AS p
+            JOIN employees AS e ON p.id_employees = e.id_employees
+            JOIN present_status AS ps ON p.id_present = ps.id_present
             WHERE e.id_employees = %s
             '''
     db_cursor.execute(query, (id_employees,))
@@ -77,8 +77,8 @@ def get_presence_employees(id_employees):
 def get_present_name(id_presence):
     query = '''
             SELECT p.id_presence, ps.id_present, ps.present_name
-            FROM presence as p
-            JOIN present_status as ps ON p.id_present = ps.id_present
+            FROM presence AS p
+            JOIN present_status AS ps ON p.id_present = ps.id_present
             WHERE p.id_presence = %s
             '''
     db_cursor.execute(query,(id_presence,))
@@ -88,9 +88,9 @@ def get_present_name(id_presence):
 def get_date_presence(id_employees, start_date, end_date):
     query = '''
             SELECT p.id_presence, p.presence_date, p.time_in, p.time_out, ps.id_present, ps.present_name
-            FROM presence as p
-            JOIN employees as e ON p.id_employees = e.id_employees
-            JOIN present_status as ps ON p.id_present = ps.id_present
+            FROM presence AS p
+            JOIN employees AS e ON p.id_employees = e.id_employees
+            JOIN present_status AS ps ON p.id_present = ps.id_present
             WHERE e.id_employees = %s AND p.presence_date BETWEEN %s AND %s
             '''
     db_cursor.execute(query, (id_employees, start_date, end_date))
@@ -100,8 +100,8 @@ def get_date_presence(id_employees, start_date, end_date):
 def get_employees_cuty(id_employees):
     query = '''
             SELECT e.name, c.id_cuty, c.id_employees, c.cuty_start, c.cuty_end, c.date_work, c.cuty_description, c.cuty_status
-            FROM cuty as c
-            JOIN employees as e ON c.id_employees = e.id_employees
+            FROM cuty AS c
+            JOIN employees AS e ON c.id_employees = e.id_employees
             WHERE e.id_employees = %s
             ORDER BY c.id_cuty DESC
             '''
@@ -135,9 +135,9 @@ def get_employees_count():
 def get_employees_data():
     query = '''
             SELECT e.id_employees, e.employees_code, e.name, e.photo, p.id_position, p.position_name, s.id_shift, s.shift_name
-            FROM employees as e
-            JOIN position as p ON e.id_position = p.id_position
-            JOIN shift as s ON s.id_shift = e.id_shift
+            FROM employees AS e
+            JOIN position AS p ON e.id_position = p.id_position
+            JOIN shift AS s ON s.id_shift = e.id_shift
             '''
     db_cursor.execute(query)
     result = db_cursor.fetchall()
