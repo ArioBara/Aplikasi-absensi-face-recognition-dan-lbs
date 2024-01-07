@@ -6,27 +6,42 @@
    ketikan perintah beikut:
    https://github.com/ArioBara/Aplikasi-absensi-face-recognition-dan-lbs.git
 2. masuk ke direktori project
+   <br>
    ketikan perintah berikut
+   <br>
    cd Aplikasi-absensi-face-recognition-dan-lbs
-3. Buat virtual environment ketikan perintah berikut:
+4. Buat virtual environment ketikan perintah berikut:
    - Windows
+     <br>
      python -m venv .venv
+     <br>
      kemudian:
+     <br>
      .venv/Script/active
    - Linux/Mac
+     <br>
      python3 -m venv .venv
+     <br>
      kemudian:
+     <br>
      source .venv/bin/activate
-4. Instal modul yang perlukan ketikan perintah berikut:
-   pip install -r requirements.txt
-5. Import database db_absensi
-6. Jalankan aplikasi
+5. Instal modul yang diperlukan
+   <br>
    ketikan perintah berikut:
+   <br>
+   pip install -r requirements.txt
+6. Import database db_absensi
+7. Jalankan aplikasi
+   <br>
+   ketikan perintah berikut:
+   <br>
    python app.py
-7. Buka browser ketikan url berikut: http://localhost:5000
-8. untuk masuk halaman admin ketikan ulr berikut: http://localhost:5000/admin/login
+8. Buka browser ketikan url berikut: http://localhost:5000
+9. untuk masuk halaman admin ketikan ulr berikut: http://localhost:5000/admin/login
+   <br>
    -username: admin
+   <br>
    -password: admin123
 
 <i>Note :</i>
-* perlu cmake dan desktop develompment c++ untuk menginstal modul dlib
+* perlu cmake dan desktop development c++ untuk menginstal modul dlib
