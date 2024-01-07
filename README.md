@@ -18,7 +18,7 @@
      <br>
      kemudian:
      <br>
-     .venv/Script/active
+     .venv/Script/activate
    - Linux/Mac
      <br>
      python3 -m venv .venv
