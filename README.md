@@ -5,7 +5,7 @@
    <br>
    ketikan perintah beikut:
    <br>
-   https://github.com/ArioBara/Aplikasi-absensi-face-recognition-dan-lbs.git
+   git clone https://github.com/ArioBara/Aplikasi-absensi-face-recognition-dan-lbs.git
 3. masuk ke direktori project
    <br>
    ketikan perintah berikut:
