@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+{% set page = 'karyawan' %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Data Karyawan | {{ nama }}</title>
+    {% include 'admin/css.html' %}
+</head>
+
+<body class="sb-nav-fixed">
+    {% include 'admin/header.html' %}
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            {% include 'admin/sidebar.html' %}
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Data Karyawan</h1>
+                    <hr>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Berikut adalah data Karyawan</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="dataTable"
+                                    width="100%" cellspacing="0">
+                                    <thead style="background-color: #DC3545" class="text-white text-center">
+                                        <tr>
+                                            <th style="width: 20px">No</th>
+                                            <th>Kode Karyawan</th>
+                                            <th>Nama Karyawan</th>
+                                            <th>Jabatan</th>
+                                            <th>Jam Kerja</th>
+                                            <th>Foto</th>
+                                            <th style="width: 100px;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for employee in employees %}
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ employee.employees_code }}</td>
+                                            <td>{{ employee.name }}</td>
+                                            <td>{{ employee.position_name }}</td>
+                                            <td>{{ employee.shift_name }}</td>
+                                            <td>
+                                                {% if employee.photo %}
+                                                <img src="{{ url_for('static', filename='photo/' + employee.photo) }}"
+                                                    height="60" width="60">
+                                                {% else %}
+                                                <img src="{{ url_for('static', filename='user/img/avatar.jpg') }}"
+                                                    height="60" width="60">
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-sm" title="Edit"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#updateModal{{ employee.id_employees }}"><i
+                                                        class="fas fa-edit"></i></a>
+                                                <div class="modal fade" id="updateModal{{ employee.id_employees }}"
+                                                    tabindex="-1"
+                                                    aria-labelledby="updateModalLabel{{ employee.id_employees }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="updateModalLabel<?php echo $data['id_employees']; ?>">
+                                                                    Update Karyawan</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ url_for('update_karyawan') }}"
+                                                                    method='post' enctype='multipart/form-data'>
+                                                                    <input type='hidden' name='id_employees'
+                                                                        value="{{ employee.id_employees }}">
+                                                                    <div class="mb-3">
+                                                                        <label for="namaLengkap" class="form-label">Nama
+                                                                            Lengkap</label>
+                                                                        <input type='text' class='form-control'
+                                                                            id='namaLengkap'
+                                                                            placeholder='Masukkan Nama Lengkap'
+                                                                            name='name' value="{{ employee.name }}">
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="jabatan"
+                                                                            class="form-label">Jabatan</label>
+                                                                        <select class="form-select" id="jabatan"
+                                                                            name='id_position'>
+                                                                            {% for position in positions %}
+                                                                            <option value="{{ position.id_position }}"
+                                                                                {% if id_position == position.id_position %}selected{% endif %}>
+                                                                                {{ position.position_name }}</option>
+                                                                            {% endfor %}
+                                                                            <!-- Tambahkan opsi sesuai dengan jabatan yang ada -->
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="jamKerja" class="form-label">Jam
+                                                                            Kerja</label>
+                                                                        <select class="form-select" id="jamKerja"
+                                                                            name='id_shift'>
+                                                                            {% for shift in shifts %}
+                                                                            <option value="{{ shift.id_shift }}"
+                                                                                {% if id_shift == shift.id_shift %}selected{% endif %}>
+                                                                                {{ shift.shift_name }}</option>
+                                                                            {% endfor %}
+                                                                            <!-- Tambahkan opsi sesuai dengan jenis jam kerja yang ada -->
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Batal</button>
+                                                                        <button type="submit" class="btn btn-danger"
+                                                                            name="simpan">Simpan</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </main>
+            <!--footer-->
+            {% include 'admin/footer.html' %}
+        </div>
+    </div>
+    <!--script-->
+    {% include 'admin/js.html' %}
+    {% include 'user/popup.html' %}
+</body>
+
+</html>

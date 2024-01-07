@@ -1,0 +1,41 @@
+<!-- header.html -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='user/css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='user/css/sw-custom.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+{% if page == 'absen' %}
+<!-- Memuat Leaflet.js dari CDN -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<style>
+  /* Pastikan elemen #map memiliki ukuran yang diinginkan */
+  #map {
+    width: 620px;
+    height: 480px;
+  }
+  @media screen and (max-width: 768px) {
+    #map {
+    width: 320px;
+    height: 280px;
+  }
+}
+</style>
+{% endif %}
+
+
+
+{% if page == 'history' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='user/js/plugins/datepicker/datepicker3.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='user/js/plugins/datatables/dataTables.bootstrap.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='user/js/plugins/magnific-popup/magnific-popup.css') }}">
+
+    <!-- Tambahkan skrip untuk jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
+{% endif %}
+

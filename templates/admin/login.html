@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+{% set page = 'login' %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Silahkan Login</title>
+    {% include 'admin/css.html' %}
+</head>
+
+<body class="text-center bg-img">
+    <main class="form-signin w-100 m-auto bg-white rounded-4">
+        <form action="{{ url_for('admin_login') }}" method="post">
+            <img class="mb-4" src="{{ url_for('static', filename='admin/img/mario.png') }}" alt="" width="100" height="100">
+            <h1 class="h3 mb-3 fw-normal">LOGIN</h1>
+            {% if error %}
+            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                {{ error }}
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>
+            {% endif %}
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Username" name="username" required="required">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required="required">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class="checkbox mb-3 text-start">
+                <label>
+                    <input type="checkbox" name="remember_me"> Ingatkan Saya
+                </label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit" name="login">Login</button>
+            <p class="mt-3 mb-3 text-muted">&copy; 2023 Ario.NET 35</p>
+        </form>
+    </main>
+    {% include 'admin/js.html' %}
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+{% set page = 'dashboard' %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Dashboard | {{ nama }}</title>
+    {% include 'admin/css.html' %}
+</head>
+
+<body class="sb-nav-fixed">
+    {% include 'admin/header.html' %}
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            {% include 'admin/sidebar.html' %}
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Dashboard</h1>
+                    <hr>
+                    <div class="accordion mb-3" id="accordionExample">
+                        <div class="accordion-item border-info">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button bg-danger text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <strong>Selamat Datang</strong>
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Lorem ipsum dolor sit amet imperdiet sodales finibus hendrerit netus maximus sed nunc magnis orci consequat erat tempor dictum cras etiam hac eget nisl purus lectus eu aliquam ligula sagittis adipiscing iaculis fermentum semper vestibulum ridiculus maecenas augue conubia mus pede justo enim rhoncus aliquet consectetur posuere condimentum fusce in
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 mb-3">
+                            <div class="card bg-primary">
+                                <div class="card-body text-white">
+                                    <div class="card-body-icon">
+                                        <i class="fas fa-user me-3 mb-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Karyawan</h5>
+                                    
+                                    <div class="display-4">
+                                        {{ karyawan }}
+                                    </div>
+                                    <a href="#">
+                                        <p class="card-text text-white">Lihat Detail <i class="fas fa-angle-double-right ml-2"></i></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 mb-3">
+                            <div class="card bg-success">
+                                <div class="card-body text-white">
+                                    <div class="card-body-icon">
+                                        <i class="fas fa-toolbox me-3 mb-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Jabatan</h5>
+                                    
+                                    <div class="display-4">{{ jabatan }}</div>
+                                    <a href="#">
+                                        <p class="card-text text-white">Lihat Detail <i class="fas fa-angle-double-right ml-2"></i></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 mb-3">
+                            <div class="card bg-warning">
+                                <div class="card-body text-white">
+                                    <div class="card-body-icon">
+                                        <i class="fas fa-clock me-3 mb-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Jam Kerja</h5>
+                                    
+                                    <div class="display-4">{{ jam_kerja }}</div>
+                                    <a href="#">
+                                        <p class="card-text text-white">Lihat Detail <i class="fas fa-angle-double-right ml-2"></i></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 mb-3">
+                            <div class="card bg-danger">
+                                <div class="card-body text-white">
+                                    <div class="card-body-icon">
+                                        <i class="fas fa-calendar me-3 mb-2"></i>
+                                    </div>
+                                    <h5 class="card-title">Cuti</h5>
+                                    
+                                    <div class="display-4">{{ cuty }}</div>
+                                    <a href="#">
+                                        <p class="card-text text-white">Lihat Detail <i class="fas fa-angle-double-right ml-2"></i></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!--footer-->
+            {% include 'admin/footer.html' %}
+        </div>
+    </div>
+    <!--script-->
+    {% include 'admin/js.html' %}
+</body>
+
+</html>

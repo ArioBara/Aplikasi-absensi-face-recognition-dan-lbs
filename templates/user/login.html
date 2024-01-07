@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel='icon' type='image/x-icon' href="{{ url_for('static', filename='admin/img/logo.jpg') }}">
+    {% include 'user/header.html' %}
+</head>
+
+<body>
+    <!-- App Capsule -->
+    <div id="appCapsule">
+        <div class="section mt-2 text-center">
+            <h1>Masuk</h1>
+            <h4>Isi formulir untuk masuk</h4>
+
+            <!-- Modal -->
+            <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Gagal</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Error message will be displayed here -->
+                            <p id="errorMessage"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="section mb-5 p-2">
+            <form id="form-login" method="POST" action="/login">
+                <div class="card">
+                    <div class="card-body pb-1">
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                    placeholder="Username Anda">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Kata sandi Anda">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-links mt-2">
+                    <div><a href="/register">Mendaftar</a></div>
+                    <div><a href="/forgot" class="text-muted">Lupa Password?</a></div>
+                </div>
+                <div class="form-button-group transparent">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <ion-icon name="log-in-outline"></ion-icon> Masuk
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- * App Capsule -->
+    {% include 'user/footer.html' %}
+    {% if error %}
+    <script>
+        // JavaScript to show the modal and display the error message
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('errorMessage').innerText = "{{ error }}";
+            $('#errorModal').modal('show');
+        });
+    </script>
+    {% endif %}
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History | {{ name }}</title>
+    <link rel='icon' type='image/x-icon' href="{{ url_for('static', filename='admin/img/logo.jpg') }}">
+    {% set page = 'history' %}
+    {% include 'user/header.html' %}
+</head>
+
+<body>
+    {% include 'user/sidebar.html' %}
+    <!-- App Capsule -->
+    <div id="appCapsule">
+        <div class="section mt-2">
+            <form method="post" action="{{ url_for('history') }}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control datepicker start_date" name="start_date"
+                                                placeholder="Tanggal Awal">
+                                            <div class="input-group-addon">
+                                                <ion-icon name="calendar-outline"></ion-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="col-sm-4  col-md-4">
+                                <div class="form-group basic">
+                                    <div class="input-wrapper">
+                                        <div class="input-group">
+                                            <input type="text" name="end_date" class="form-control datepicker end_date"
+                                                value="{{ tanggal_sekarang }}">
+                                            <div class="input-group-addon">
+                                                <ion-icon name="calendar-outline"></ion-icon>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 justify-content-between">
+                                <button type="submit" class="btn btn-danger mt-1 btn-sortir">
+                                    <ion-icon name="checkmark-outline"></ion-icon>Tampilkan
+                                </button>
+                                <button type="button" class="btn btn-warning mt-1" data-toggle="modal" data-target="#modal-print">
+                                    <ion-icon name="print-outline"></ion-icon> Cetak
+                                </button>
+                                <!-- Ubah button clear menjadi submit dan beri nama 'clear_button' -->
+                                <button type="submit" class="btn btn-success mt-1 btn-clear" name="clear_button">
+                                    <ion-icon name="repeat-outline"></ion-icon> Clear
+                                </button>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+
+        <div class="section mt-2">
+            <div class="section-title">Data Absensi</div>
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table rounded" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="align-middle text-center" width="10">No</th>
+                                <th scope="col" class="align-middle">Tanggal</th>
+                                <th scope="col" class="align-middle">Absen Masuk</th>
+                                <th scope="col" class="align-middle">Absen Pulang</th>
+                                <th scope="col" class="align-middle hidden-sm">Status</th>
+                                <th scope="col" class="align-middle">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for presence in presences %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ presence['presence_date'] }}</td>
+                                <td><span class="badge badge-success">{{ presence['time_in'] }}</span></td>
+                                <td><span class="badge badge-danger">{{ presence['time_out']  }}</span></td>
+                                <td>{{ presence['present_name'] }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-success btn-sm" title="Edit"
+                                        data-toggle="modal" data-target="#modal-show{{ presence['id_presence'] }}"><i
+                                            class="fas fa-edit"></i></button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- <div class="alert alert-warning mt-2" role="alert">
+                <ion-icon name="alert-circle-outline"></ion-icon> Untuk melihat foto absen silahkan klik pada waktu
+                masuk/pulang</a>
+            </div> -->
+        </div>
+
+
+       <!-- Modal untuk Cetak/Export -->
+<div class="modal fade action-sheet inset" id="modal-print" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cetak / Export</h5>
+                <a href="javascript:void(0);" class="close" style="position: absolute;right:15px;top: 10px;" data-dismiss="modal" aria-hidden="true">
+                    <ion-icon name="close-outline"></ion-icon>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="action-sheet-content">
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label">Pilih Tipe</label>
+                            <select class="form-control custom-select type" name="type" id="print-export-select" required>
+                                <option value="pdf">PDF</option>
+                                <option value="excel">EXCEL</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tombol untuk Cetak dan Export -->
+                    <div class="form-group basic">
+                        <button type="button" class="btn btn-danger btn-block btn-lg mt-2 btn-print-export" onclick="printOrExport()">
+                            <ion-icon name="print-outline"></ion-icon> Cetak
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        {% for presence in presences %}
+    <!-- Modal untuk setiap entitas kehadiran -->
+    <div class="modal fade action-sheet inset" id="modal-show{{ presence['id_presence'] }}" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" style="z-index: 10000;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Absen Tanggal <span class="status-date badge badge-primary">{{ presence['presence_date'] }}</span></h5>
+                    <a href="javascript:void(0);" class="close" style="position: absolute;right: 15px;top: 10px;" data-dismiss="modal" aria-hidden="true">
+                        <ion-icon name="close-outline"></ion-icon>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <div class="action-sheet-content">
+                        <form id="update-history-{{ presence['id_presence'] }}" method="post" action="{{ url_for('history_update') }}">
+                            <!-- Gunakan id yang unik untuk setiap form -->
+                            <input type="hidden" name="id_presence" id="presence_id_{{ presence['id_presence'] }}" value="{{ presence['id_presence'] }}" readonly>
+                            <div class="form-group basic">
+                                <div class="input-wrapper">
+                                    <label class="label">Kehadiran</label>
+                                    <select class="form-control custom-select" name="id_present" id="status_{{ presence['id_presence'] }}" required>
+                                        {% for present in presence_status %}
+                                            <option value="{{ present.id_present }}" {% if present.id_present == presence['id_present'] %}selected{% endif %}>{{ present.present_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group basic">
+                                <label class="label">Keterangan</label>
+                                <div class="input-wrapper">
+                                    <textarea id="information_{{ presence['id_presence'] }}" rows="2" class="form-control" name="keterangan" placeholder="Keterangan"></textarea>
+                                </div>
+                                <span class="small">Kosongkan jika tidak memberi keterangan</span>
+                            </div>
+                            <div class="form-group basic">
+                                <button type="submit" class="btn btn-danger btn-block btn-lg">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+    </div>
+    <script>
+        var page = 'history';
+    </script>
+    {% include 'user/bottom_navigation.html' %}
+    {% include 'user/footer.html' %}
+    {% include 'user/popup.html' %}
+</body>
+
+</html>

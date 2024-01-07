@@ -1,0 +1,84 @@
+<!-- home -->
+<div class="section mt-4">
+    <div class="section-title mb-1">Absensi Bulan
+        <form action="/absensi" method="GET">
+            <select class="select select-change text-primary" name="bulan" required>
+                {% for key, value in array_bulan.items() %}
+                {% if key == bulan %}
+                <option value="{{ key }}" selected>{{ value }}</option>
+                {% else %}
+                <option value="{{ key }}">{{ value }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <span class="text-primary">{{ tahun }}</span>
+        </form>
+    </div>
+    <div class="transactions">
+        <div class="row">
+            <div class="load-home" style="display:contents">
+                <!-- item -->
+                <div class="col-6 col-md-3 mb-2">
+                    <a href="javascript:void(0)" class="item">
+                        <div class="detail">
+                            <div class="icon-block text-primary">
+                                <ion-icon name="log-in"></ion-icon>
+                            </div>
+                            <div>
+                                <strong>Hadir</strong>
+                                <p>None</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- * item -->
+                <!-- item -->
+                <div class="col-6 col-md-3 mb-2">
+                    <a href="javascript:void(0)" class="item">
+                        <div class="detail">
+                            <div class="icon-block text-success">
+                                <ion-icon name="person"></ion-icon>
+                            </div>
+                            <div>
+                                <strong>Izin</strong>
+                                <p>None</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- * item -->
+
+                <!-- item -->
+                <div class="col-6 col-md-3">
+                    <a href="javascript:void(0)" class="item">
+                        <div class="detail">
+                            <div class="icon-block text-secondary">
+                                <ion-icon name="sad"></ion-icon>
+                            </div>
+                            <div>
+                                <strong>Sakit</strong>
+                                <p>None</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- * item -->
+                <!-- item -->
+                <div class="col-6 col-md-3">
+                    <a href="javascript:void(0)" class="item">
+                        <div class="detail">
+                            <div class="icon-block text-danger">
+                                <ion-icon name="alarm"></ion-icon>
+                            </div>
+                            <div>
+                                <strong>Terlambat</strong>
+                                <p>None</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- * item -->
+            </div>
+        </div>
+    </div>
+</div>

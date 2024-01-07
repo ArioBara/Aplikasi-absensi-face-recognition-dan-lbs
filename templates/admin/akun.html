@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+{% set page = 'akun' %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Akun | {{ nama }}</title>
+    {% include 'admin/css.html' %}
+</head>
+
+<body class="sb-nav-fixed">
+    {% include 'admin/header.html' %}
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            {% include 'admin/sidebar.html' %}
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Data Admin</h1>
+                    <hr>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Berikut adalah data Admin</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <button type="button" class="btn btn-danger mb-4" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus"></i> Tambah
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Admin</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ url_for('tambah_admin') }}" method='post' enctype='multipart/form-data'>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Nama Admin</label>
+                                            <input type='text' class='form-control' id='exampleFormControlInput1' placeholder='Masukkan Nama Admin' name='nama'>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Username</label>
+                                            <input type='text' class='form-control' id='exampleFormControlInput1' placeholder='Masukkan Username' name='username'>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Password</label>
+                                            <input type='password' class='form-control' id='exampleFormControlInput1' placeholder='Masukkan Password' name='password1'>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Konfirmasi Password</label>
+                                            <input type='password' class='form-control' id='exampleFormControlInput1' placeholder='Masukkan Password' name='password2'>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-danger" name="simpan">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                                    <thead style="background-color: #DC3545" class="text-white text-center">
+                                        <tr>
+                                            <th style="width: 20px">No</th>
+                                            <th>Nama Admin</th>
+                                            <th>Username</th>
+                                            <th style="width: 100px;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for admin in admins %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ admin.nama }}</td>
+                                                <td>{{ admin.username }}</td>
+                                                <td>
+                                                    <a href="" class="btn btn-success btn-sm" title="Edit" data-bs-toggle="modal" data-bs-target="#updateModal{{ admin.id_admin }}"><i class="fas fa-edit"></i></a>
+                                                    <div class="modal fade" id="updateModal{{ admin.id_admin }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-scrollable">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update User</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ url_for('update_admin') }}" method='post' enctype='multipart/form-data'>
+                                                                        <div class="mb-3">
+                                                                            <input type='hidden' name='id_admin' value="{{ admin.id_admin }}">
+                                                                            <label for="namaLengkap" class="form-label">Nama Lengkap</label>
+                                                                            <input type='text' class='form-control' id='namaLengkap' placeholder='Masukkan Nama Lengkap' name='nama' value="{{ admin.nama }}">
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="username" class="form-label">Username</label>
+                                                                            <input type='text' class='form-control' id='username' placeholder='Masukkan Username' name='username' value="{{ admin.username }}">
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                            <button type="submit" class="btn btn-danger" name="simpan">Simpan</button>
+                                                                        </div>
+                                                                    </form>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="" class="btn btn-danger btn-sm" title="Hapus" data-bs-toggle="modal" data-bs-target="#deleteModal{{ admin.id_admin }}"><i class="fas fa-trash"></i></a>
+                                                    <div class="modal fade" id="deleteModal{{ admin.id_admin }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <form action="{{ url_for('delete_admin') }}" method="post">
+                                                            <div class="modal-dialog modal-dialog-scrollable">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Data</h1>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="mb-3">
+                                                                            <input type="hidden" name="id_admin" value="{{ admin.id_admin }}">
+                                                                            <label for="exampleFormControlInput1" class="form-label">Apakah Anda ingin menghapus data {{ admin.nama }}?</label>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                            <button class="btn btn-danger">Hapus</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </main>
+            <!--footer-->
+            {% include 'admin/footer.html' %}
+        </div>
+    </div>
+    <!--script-->
+    {% include 'admin/js.html' %}
+    {% include 'user/popup.html' %}
+</body>
+
+</html>

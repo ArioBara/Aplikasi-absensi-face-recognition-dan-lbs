@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absen | {{ name }}</title>
+    <link rel='icon' type='image/x-icon' href="{{ url_for('static', filename='admin/img/logo.jpg') }}">
+    {% set page = 'absen' %}
+    {% include 'user/header.html' %}
+</head>
+
+<body>
+    {% include 'user/sidebar.html' %}
+    <!-- App Capsule -->
+    <div id="appCapsule">
+        <!-- Wallet Card -->
+        <div class="section wallet-card-section pt-1">
+            <div class="wallet-card">
+                <div class="balance">
+                    <div class="left">
+                        <span class="title"> Selamat {{ salam }}</span>
+                        <h4>{{ name }}</h4>
+                    </div>
+                    <div class="right">
+                        <span class="title">{{ tanggal }} </span>
+                        <h4><span id="clock" class="clock text-right"></span></h4>
+                    </div>
+
+                </div>
+
+                <!-- * Balance -->
+                <div class="text-center">
+                    <p>Lat-Long: <span class="latitude" id="latitude"></span></p>
+                </div>
+                <div class="wallet-footer text-center">
+                    <div class="webcam-capture-body text-center">
+                        <div class="mb-2" id="map"></div>
+
+                        <!-- Webcam container -->
+                        <div class="webcam-container text-center" style="display: none;">
+                            <img class="webcam-capture mb-2" id="webcam" alt="Webcam Feed" width="640" height="480">
+
+                            <form class="form-group basic" method="post" action="/capture">
+                                <input type="hidden" name="presence_date" value="{{ tanggal }}">
+                                <input type="hidden" name="time" id="hiddenTime" value="">
+                                <input type="hidden" name="koordinat" id="hiddenKoordinat" value="">
+                                <button class="btn btn-success btn-lg btn-block" id="capture-btn" type="submit">
+                                    <ion-icon name="camera-outline"></ion-icon>Absen
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- * Wallet Footer -->
+            </div>
+        </div>
+        <!-- Card -->
+    </div>
+    <!-- * App Capsule -->
+    {% include 'user/bottom_navigation.html' %}
+    {% include 'user/footer.html' %}
+    {% include 'user/popup.html' %}
+    <script>
+        // Fungsi untuk memperbarui waktu
+        function updateClock() {
+            var clock = document.getElementById('clock');
+            var currentTime = new Date();
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+            var seconds = currentTime.getSeconds();
+
+            // Menambahkan nol di depan angka jika hanya satu digit
+            hours = (hours < 10 ? "0" : "") + hours;
+            minutes = (minutes < 10 ? "0" : "") + minutes;
+            seconds = (seconds < 10 ? "0" : "") + seconds;
+
+            // Menampilkan waktu dalam format jam:menit:detik
+            var waktu_terformat = hours + ":" + minutes + ":" + seconds;
+            clock.innerText = "Waktu sekarang: " + waktu_terformat;
+
+            // Setel nilai input hidden dengan waktu yang telah diformat
+            document.getElementById("hiddenTime").value = waktu_terformat;
+        }
+
+        // Memperbarui waktu setiap detik
+        setInterval(updateClock, 1000);
+
+        // Memanggil fungsi updateClock() untuk pertama kali saat halaman dimuat
+        updateClock();
+
+        // Function to show webcam
+        function showWebcam() {
+            document.querySelector('.webcam-container').style.display = 'block'; // Show webcam container
+            document.querySelector('#webcam').src = "{{ url_for('video_feed') }}"; // Set webcam source
+            document.getElementById('map').style.display = 'none';
+        }
+
+        // Function to hide webcam
+        function hideWebcam() {
+            document.querySelector('.webcam-container').style.display = 'none'; // Hide webcam container
+            document.getElementById('map').style.display = 'block';
+        }
+
+        // Inisialisasi peta dengan Leaflet.js
+        var map = L.map('map').setView([0, 0], 2); // Koordinat dan tingkat zoom awal
+
+        // Menambahkan peta dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Mendapatkan lokasi terkini pengguna menggunakan geolokasi browser (jika tersedia)
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+
+                // Update latitude and longitude in the HTML
+                document.getElementById('latitude').textContent = lat + ", " + lng;
+
+                document.getElementById('hiddenKoordinat').value = lat + ", " + lng;
+
+                // Menambahkan penanda di lokasi terkini
+                L.marker([lat, lng]).addTo(map)
+                    .bindPopup('Lokasi Anda')
+                    .openPopup();
+
+                // Menyesuaikan tampilan peta ke lokasi terkini
+                map.setView([lat, lng], 15);
+
+                // Menentukan jarak antara lokasi terkini dan lokasi yang dituju
+                var destinationLocation = L.latLng(-7.793225618987443, 110.33049653696898);
+                var currentLocation = L.latLng(lat, lng);
+                var distance = destinationLocation.distanceTo(currentLocation); // Dalam meter
+
+                // Menambahkan kondisi untuk memberikan informasi
+                if (distance <= 500) {
+                    setTimeout(function () {
+                        Swal.fire({
+                            title: 'BERHASIL',
+                            text: 'Anda berada dalam jangkauan lokasi kantor.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            showWebcam();
+                        });
+                    }, 2000); // Menunda tampilan Swal selama 5 detik (5000 milidetik)
+                } else {
+                    setTimeout(function () {
+                        Swal.fire({
+                            title: 'GAGAL',
+                            text: 'Anda diluar jangkauan lokasi kantor.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            hideWebcam();
+                        });
+                    }, 2000); // Menunda tampilan Swal selama 5 detik (5000 milidetik)
+                }
+            });
+        } else {
+            console.log('Geolokasi tidak didukung pada browser ini.');
+        }
+
+        // Menambahkan lokasi yang dituju
+        var destination = L.marker([-7.793225618987443, 110.33049653696898]).addTo(map)
+            .bindPopup('Lokasi Kantor')
+            .openPopup();
+
+        // Menambahkan lingkaran (radius) di sekitar lokasi yang dituju
+        var destinationRadius = L.circle([-7.793225618987443, 110.33049653696898], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.3,
+            radius: 500 // Radius dalam meter
+        }).addTo(map);
+    </script>
+</body>
+
+</html>

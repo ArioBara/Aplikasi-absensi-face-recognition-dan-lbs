@@ -1,0 +1,14 @@
+{% if page == 'login' %}
+<script src="{{ url_for('static', filename='admin/bootstrap-5.2.3-dist/js/bootstrap.bundle.js') }}"></script>
+{% else %}
+<script src="{{ url_for('static', filename='admin/jquery/jquery.slim.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='admin/js/scripts.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/datatable/datatables.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable();
+    });
+</script>
+{% endif %}

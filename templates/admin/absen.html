@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+{% set page = 'admin_absen' %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>absen | {{ nama }}</title>
+    {% include 'admin/css.html' %}
+</head>
+
+<body class="sb-nav-fixed">
+    {% include 'admin/header.html' %}
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            {% include 'admin/sidebar.html' %}
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Data Absen</h1>
+                    <hr>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Berikut adalah data Absen</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <button type="button" class="btn btn-danger mb-4" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus"></i> Tambah
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Absen</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ url_for('tambah_admin_absen') }}" method='post' enctype='multipart/form-data'>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Nama Pegawai</label>
+                                            <select class="form-select" id="exampleFormControlSelect1" name='id_employees'>
+                                                <option value="">- Pilih -</option>
+                                                {% for employee in employees %}
+                                                    <option value="{{ employee.id_employees }}">
+                                                        {{ employee.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Tanggal</label>
+                                            <input type='text' class='form-control' id='timeIn' placeholder='Masukkan Tanggal Mulai Cuti' name='date'>
+                                            <i class="text-danger">Format yyyy-mm-dd</i>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Waktu Masuk</label>
+                                            <input type='text' class='form-control' id='timeIn' placeholder='Masukkan Waktu Masuk' name='time_in'>
+                                            <i class="text-danger">Format 00:00:00</i>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Waktu Pulang</label>
+                                            <input type='text' class='form-control' id='timeOut' placeholder='Masukkan Waktu Pulang' name='time_out'>
+                                            <i class="text-danger">Format 00:00:00</i>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Keterangan</label>
+                                            <textarea class='form-control' placeholder="masukkan keterangan" name="keterangan"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Status Cuti</label>
+                                            <select class="form-select" id="jamKerja" name='status'>
+                                                {% for present in presents %}
+                                                <option value="{{ present.id_present }}">{{ present.present_name }}</option>
+                                                {% endfor %}
+                                                <!-- Tambahkan opsi sesuai dengan jenis jam kerja yang ada -->
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-danger" name="simpan">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                                    <thead style="background-color: #DC3545" class="text-white text-center">
+                                        <tr>
+                                            <th style="width: 20px">No</th>
+                                            <th>ID Absen</th>
+                                            <th>Nama Pegawai</th>
+                                            <th>Tanggal</th>
+                                            <th>Absen Masuk</th>
+                                            <th>Absen Pulang</th>
+                                            <th>Status</th>
+                                            <th>Keterangan</th>
+                                            <th>Foto Masuk</th>
+                                            <th>Foto Pulang</th>
+                                            <th style="width: 100px;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for presence in presences %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>{{ presence.id_presence }}</td>
+                                                <td>{{ presence.name }}</td>
+                                                <td>{{ presence.presence_date }}</td>
+                                                <td>{{ presence.time_in }}</td>
+                                                <td>{{ presence.time_out }}</td>
+                                                <td>{{ presence.present_name }}</td>
+                                                <td>{{ presence.keterangan }}</td>
+                                                <td>
+                                                    {% if presence.picture_in %}
+                                                        <img src="{{ url_for('static', filename=presence.picture_in.replace('\\', '/').lstrip('static/')) }}" height="60" width="60">
+                                                    {% else %}
+                                                        <img src="{{ url_for('static', filename='user/img/avatar.jpg') }}" height="60" width="60">
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if presence.picture_out %}
+                                                        <img src="{{ url_for('static', filename=presence.picture_out.replace('\\', '/').lstrip('static/')) }}" height="60" width="60">
+                                                    {% else %}
+                                                        <img src="{{ url_for('static', filename='user/img/avatar.jpg') }}" height="60" width="60">
+                                                    {% endif %}
+                                                </td>                                                                                                                                                                              
+                                                <td>
+                                                    <!-- Tombol Edit -->
+                                                    <a href="#" class="btn btn-success btn-sm" title="Edit" data-bs-toggle="modal" data-bs-target="#updateModal{{ presence.id_presence }}"><i class="fas fa-edit"></i></a>
+                                                    <!-- Modal Update -->
+                                                    <div class="modal fade" id="updateModal{{ presence.id_presence }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-scrollable">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update Absen</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ url_for('update_admin_absen') }}" method='post' enctype='multipart/form-data'>
+                                                                        <div class="mb-3">
+                                                                            <input type='hidden' name='id_presence' value="{{ presence.id_presence }}">
+                                                                            <label for="statusAbsen" class="form-label">Status Absen</label>
+                                                                            <select class="form-select" id="statusAbsen" name='status'>
+                                                                                <option value="1" {% if presence.present_name == 'Hadir' %} selected {% endif %}>Hadir</option>
+                                                                                <option value="2" {% if presence.present_name == 'Sakit' %} selected {% endif %}>Sakit</option>
+                                                                                <option value="3" {% if presence.present_name == 'Izin' %} selected {% endif %}>Izin</option>
+                                                                                <!-- Tambahkan opsi sesuai dengan jenis status absen yang ada -->
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                            <button type="submit" class="btn btn-danger" name="simpan">Simpan</button>
+                                                                        </div>
+                                                                    </form>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Tombol Hapus -->
+                                                    <a href="#" class="btn btn-danger btn-sm" title="Hapus" data-bs-toggle="modal" data-bs-target="#deleteModal{{ presence.id_presence }}"><i class="fas fa-trash"></i></a>
+                                                    <!-- Modal Hapus -->
+                                                    <div class="modal fade" id="deleteModal{{ presence.id_presence }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <form action="{{ url_for('delete_admin_absen') }}" method="post">
+                                                            <div class="modal-dialog modal-dialog-scrollable">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Data</h1>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="mb-3">
+                                                                            <input type="hidden" name="id_presence" value="{{ presence.id_presence }}">
+                                                                            <label for="deleteConfirmation" class="form-label">Apakah Anda ingin menghapus data {{ presence.name }}?</label>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                            <button class="btn btn-danger">Hapus</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+            </main>
+            <!--footer-->
+            {% include 'admin/footer.html' %}
+        </div>
+    </div>
+    <!--script-->
+    {% include 'admin/js.html' %}
+    {% include 'user/popup.html' %}
+</body>
+
+</html>
