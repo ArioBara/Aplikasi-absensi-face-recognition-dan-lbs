@@ -44,7 +44,7 @@
    http://localhost:5000
 9. untuk masuk halaman admin
     <br>
-    ketikan ulr berikut:
+    ketikan url berikut:
     <br>
     http://localhost:5000/admin/login
    <br>
