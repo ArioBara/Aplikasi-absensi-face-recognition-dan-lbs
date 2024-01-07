@@ -4,10 +4,11 @@
 1. Clone project dari github
    <br>
    ketikan perintah beikut:
-   https://github.com/ArioBara/Aplikasi-absensi-face-recognition-dan-lbs.git
-2. masuk ke direktori project
    <br>
-   ketikan perintah berikut
+   https://github.com/ArioBara/Aplikasi-absensi-face-recognition-dan-lbs.git
+3. masuk ke direktori project
+   <br>
+   ketikan perintah berikut:
    <br>
    cd Aplikasi-absensi-face-recognition-dan-lbs
 4. Buat virtual environment ketikan perintah berikut:
@@ -36,12 +37,21 @@
    ketikan perintah berikut:
    <br>
    python app.py
-8. Buka browser ketikan url berikut: http://localhost:5000
-9. untuk masuk halaman admin ketikan ulr berikut: http://localhost:5000/admin/login
+8. Buka browser
    <br>
-   -username: admin
+   ketikan url berikut:
    <br>
-   -password: admin123
-
+   http://localhost:5000
+9. untuk masuk halaman admin
+    <br>
+    ketikan ulr berikut:
+    <br>
+    http://localhost:5000/admin/login
+   <br>
+   - username: admin
+   - password: admin123
+<br>
+<br>
 <i>Note :</i>
+<br>
 * perlu cmake dan desktop development c++ untuk menginstal modul dlib
