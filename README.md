@@ -55,4 +55,5 @@
 <i>Note :</i>
 <br>
 * perlu cmake dan desktop development c++ untuk menginstal modul dlib
+  <br>
 * jika kamera tidak terbuka atau orange screen, ubah camera = cv2.VideoCapture(1) pada file face_utils.py menjadi camera = cv2.VideoCapture(0)
