@@ -384,7 +384,7 @@ def tambah_admin():
                 query = "INSERT INTO admin (nama, username, password) VALUE (%s, %s, %s)"
                 config.db_cursor.execute(query, (nama, username, password))
                 config.db_connection.commit()
-                flash('Tambah data berhasil', 'error')
+                flash('Tambah data berhasil', 'success')
                 return redirect(url_for('akun'))
             else:
                 flash('Tambah data gagal', 'error')
